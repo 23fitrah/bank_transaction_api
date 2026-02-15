@@ -28,10 +28,12 @@ Check the documentation below for setup instructions and API usage examples.
    ```bash
    git clone https://github.com/your-username/bank-transaction-api.git
    cd bank-transaction-api
+   
 2. **Configure environment variables**
   ```bash
    cp .env.example .env
    # edit database and application config
+
 3. **Run Run the application**
    ```bash
    go run main.go
