@@ -76,8 +76,8 @@ docker-compose up -d
       --header 'Content-Type: application/json' \
       --header 'Authorization: Bearer YOUR_TOKEN' \
       --data '{
-          "username": "optadmin",
-          "password": "Kun(!93mb0k",
+          "username": "your_username",
+          "password": "your_password",
           "request": {
               "account_no": "030881899288083"
           }
@@ -89,8 +89,8 @@ docker-compose up -d
    --header 'Content-Type: application/json' \
    --header 'Authorization: Bearer YOUR_TOKEN' \
    --data '{
-       "username": "inter02",
-       "password": "Kun(!93mb0k",
+       "username": "your_username",
+       "password": "your_password",
        "request": {
            "rowid_sender": 1,
            "rowid_beneficiary": 1,
