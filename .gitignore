@@ -1,0 +1,52 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.coverprofile
+
+# Dependency directories (remove the comment below if you use Go modules)
+vendor/
+temp/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+
+# Temporary files
+*.tmp
+*.bak
+*.old
+
+# If using by GoReleaser
+dist/
+
+# If you're compiling protobufs
+*.pb.go
+
+# cgo generated files
+_cgo*
+
+# Testing
+coverage.out
