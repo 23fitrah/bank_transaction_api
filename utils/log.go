@@ -48,6 +48,13 @@ func LogMonitoringMiddleware(service *service.LogMonitoringService) gin.HandlerF
 
 		c.Next()
 
+		var body map[string]interface{}
+		if err := json.Unmarshal(requestBodyBytes, &body); err == nil {
+			if username, ok := body["username"].(string); ok {
+				userName = username
+			}
+		}
+
 		if len(string(blw.body.String())) > 0 {
 			var extractor RequestExtractor
 			if err := json.Unmarshal(blw.body.Bytes(), &extractor); err == nil {

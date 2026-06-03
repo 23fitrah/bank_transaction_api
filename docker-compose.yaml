@@ -21,7 +21,7 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=P@ssw0rd12
+      - ELASTIC_PASSWORD=YOUR_PASSWORD_HERE
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
@@ -43,7 +43,7 @@ services:
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=AAEAAWVsYXN0aWMva2liYW5hL3Rva2VuOjI5T2NLUzVWUTktVDhDNVpwTFlZdFE
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=YOUR_PASSWORD_HERE
     ports:
       - "5601:5601"
     depends_on:

@@ -20,15 +20,16 @@ func NewAccountRepository(db *sql.DB) *AccountRepository {
 func (r *AccountRepository) GetInquiryAccountRepository(ctx context.Context, accountNo string) (*account.Account, error) {
 	const query = `
 		SELECT TOP 1 
-			ACCOUNT_NO, 
-			NAME, 
-			BALANCE, 
-			CURRENCY,
-			STATUS 
+			a.ACCOUNT_NO, 
+			a.NAME, 
+			a.BALANCE, 
+			a.CURRENCY,
+			s.DESCRIPTION AS STATUS
 		FROM 
-			m_account 
+			m_account a
+		JOIN m_status s ON a.STATUS = s.ID_STATUS
 		WHERE 
-			ACCOUNT_NO = @p1 `
+			a.ACCOUNT_NO = @p1 `
 	var uf account.Account
 
 	err := r.db.QueryRowContext(ctx, query, accountNo).Scan(
