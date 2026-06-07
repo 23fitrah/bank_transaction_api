@@ -33,20 +33,23 @@ func processLogQueue() {
 }
 
 func LogToES(indexPrefix, operation, message string, metadata map[string]interface{}) {
+
 	esClient := config.GetEsClient()
 	if esClient == nil {
+
 		return
 	}
 	if metadata == nil {
 		metadata = make(map[string]interface{})
 	}
+
 	metadata["@timestamp"] = time.Now()
 	metadata["operation"] = operation
 	metadata["message"] = message
 
 	logQueue <- logEntry{
 		esClient:    esClient,
-		indexPrefix: "transaction_api-"+indexPrefix,
+		indexPrefix: "transaction_api-" + indexPrefix,
 		data:        metadata,
 	}
 }

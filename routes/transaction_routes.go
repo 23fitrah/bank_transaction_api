@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterTransactionRoutes(r *gin.Engine, transactionHandler *handler.TransactionHandler) {
-	mx := r.Group("/transaction")
+	mx := r.Group("/api/v1/transaction")
 	mx.Use(utils.AuthMiddlewareGin())
 	{
 		mx.POST("/create", transactionHandler.InsertTransactionHandler)

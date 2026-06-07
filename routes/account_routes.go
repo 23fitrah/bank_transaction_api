@@ -8,7 +8,7 @@ import (
 )
 
 func RegisterAccountRoutes(r *gin.Engine, accountHandler *handler.AccountHandler) {
-	mx := r.Group("/account")
+	mx := r.Group("/api/v1/account")
 	mx.Use(utils.AuthMiddlewareGin())
 	{
 		mx.POST("/inquiry", accountHandler.GetInquiryAccountHandler)

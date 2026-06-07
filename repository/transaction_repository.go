@@ -19,6 +19,7 @@ func NewTransactionRepository(db *sql.DB) *TransactionRepository {
 }
 
 func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, data model.Transaction) (int64, error) {
+	now := time.Now()
 
 	const query = `
 		INSERT INTO 
@@ -43,7 +44,7 @@ func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, d
 		VALUES (
 			@p1,            
 			@p2,            
-			GETDATE(),            
+			@p14,            
 			@p3,            
 			@p4,            
 			@p5,            
@@ -65,6 +66,7 @@ func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, d
 	res, err := r.db.ExecContext(ctx, query,
 		sql.Named("p1", data.ROWID_SENDER),
 		sql.Named("p2", data.ROWID_BENEFICIARY),
+		sql.Named("p14", now.Format("2006-01-02 15:04:05")),
 		sql.Named("p3", data.DEBET_ACCOUNT),
 		sql.Named("p4", data.DEBET_NAME),
 		sql.Named("p5", data.DEBET_CURR),
@@ -170,6 +172,8 @@ func (r *TransactionRepository) GetAllTransactionRepository(ctx context.Context,
 	defer sqlRows.Close()
 
 	results := []*model.Transaction{}
+	var tt time.Time
+
 	for sqlRows.Next() {
 		var trx model.Transaction
 		err := sqlRows.Scan(
@@ -179,7 +183,7 @@ func (r *TransactionRepository) GetAllTransactionRepository(ctx context.Context,
 			&trx.REFERENCE_NUMBER,
 			&trx.STATUS_CODE,
 			&trx.STATUS_DESC,
-			&trx.TRANSACTION_DATE,
+			&tt,
 			&trx.DEBET_ACCOUNT,
 			&trx.DEBET_NAME,
 			&trx.DEBET_CURR,
@@ -191,6 +195,7 @@ func (r *TransactionRepository) GetAllTransactionRepository(ctx context.Context,
 		if err != nil {
 			return nil, 0, fmt.Errorf("scan transaction row failed: %w", err)
 		}
+		trx.TRANSACTION_DATE = tt.Format("2006-01-02 15:04:05")
 		results = append(results, &trx)
 	}
 
@@ -220,7 +225,7 @@ func (r *TransactionRepository) GetDetailTransactionRepository(ctx context.Conte
 		WHERE 
 			ROWID_TRX = @p1 `
 	var uf model.Transaction
-
+	var tt time.Time
 	err := r.db.QueryRowContext(ctx, query, rowId).Scan(
 		&uf.ROWID_TRX,
 		&uf.ROWID_SENDER,
@@ -228,7 +233,7 @@ func (r *TransactionRepository) GetDetailTransactionRepository(ctx context.Conte
 		&uf.REFERENCE_NUMBER,
 		&uf.STATUS_CODE,
 		&uf.STATUS_DESC,
-		&uf.TRANSACTION_DATE,
+		&tt,
 		&uf.DEBET_ACCOUNT,
 		&uf.DEBET_NAME,
 		&uf.DEBET_CURR,
@@ -243,6 +248,6 @@ func (r *TransactionRepository) GetDetailTransactionRepository(ctx context.Conte
 		}
 		return nil, fmt.Errorf("query get detail transaction: %w", err)
 	}
-
+	uf.TRANSACTION_DATE = tt.Format("2006-01-02 15:04:05")
 	return &uf, nil
 }

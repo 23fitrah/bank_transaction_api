@@ -10,7 +10,7 @@ type Request struct {
 }
 
 type RequestField struct {
-	ACCOUNT_NO string `json:"account_no" validate:"required,len=15"`
+	ACCOUNT_NO string `json:"account_no" validate:"required,len=15,numeric"`
 }
 
 type AccountRequest struct {
@@ -27,7 +27,7 @@ type AccountRequestField struct {
 	EMAIL      string  `json:"email" validate:"required,email,max=50"`
 	BALANCE    float64 `json:"balance" validate:"required,gt=0"`
 	CURRENCY   string  `json:"currency" validate:"required,len=3"`
-	STATUS     string  `json:"status" validate:"required,oneof=ACTIVE INACTIVE DORMANT FREEZE"`
+	STATUS     string  `json:"status" validate:"required,number,oneof=1 2 3 4 5"`
 }
 
 type AccountDeleteRequest struct {

@@ -5,6 +5,8 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
+	"strconv"
 	"strings"
 	"transaction_api/model/account"
 )
@@ -112,6 +114,12 @@ func (r *AccountRepository) InsertAccountRepository(ctx context.Context, data ac
 		);
 	`
 
+	status, err := strconv.Atoi(data.STATUS)
+	if err != nil {
+		log.Printf("Error converting status to int: %v", err)
+		return 0, fmt.Errorf("invalid status: %w", err)
+	}
+
 	res, err := r.db.ExecContext(ctx, query,
 		sql.Named("p1", data.NAME),
 		sql.Named("p2", data.ACCOUNT_NO),
@@ -120,14 +128,16 @@ func (r *AccountRepository) InsertAccountRepository(ctx context.Context, data ac
 		sql.Named("p5", data.EMAIL),
 		sql.Named("p6", data.BALANCE),
 		sql.Named("p7", data.CURRENCY),
-		sql.Named("p8", strings.ToUpper(data.STATUS)))
+		sql.Named("p8", status))
 
 	if err != nil {
+		log.Printf("Error executing insert account query: %v", err)
 		return 0, fmt.Errorf("error inserting into account: %w", err)
 	}
 
 	rowsAffected, err := res.RowsAffected()
 	if err != nil {
+		log.Printf("Error fetching rows affected for insert account: %v", err)
 		return 0, fmt.Errorf("error inserting rows affected: %w", err)
 	}
 
@@ -195,11 +205,12 @@ func (r *AccountRepository) GetDetailAccountRepository(ctx context.Context, id i
 			ACCOUNT_NO,
 			ADDRESS,
 			CURRENCY,
-			STATUS,
+			m_status.DESCRIPTION AS STATUS,
 			COUNTRY,
 			EMAIL,
 			BALANCE
 		FROM [m_account]
+		JOIN  m_status ON m_account.STATUS = m_status.ID_STATUS
 		WHERE ID_ACCOUNT = @p1
 	`
 	var uf account.Account

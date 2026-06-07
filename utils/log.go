@@ -84,8 +84,8 @@ func LogMonitoringMiddleware(service *service.LogMonitoringService) gin.HandlerF
 		var menu = ""
 
 		if len(parts) > 1 {
-			menu = parts[1]
-			action = parts[2]
+			menu = parts[3]
+			action = parts[4]
 		}
 
 		logData := log_monitoring.Log_monitoring{

@@ -26,10 +26,10 @@ type RequestField struct {
 	ROWID_BENEFICIARY int     `json:"rowid_beneficiary" validate:"required"`
 	TRANSACTION_DATE  string  `json:"transaction_date,omitempty"`
 	REFERENCE_NUMBER  string  `json:"reference_number,omitempty"`
-	DEBET_ACCOUNT     string  `json:"debet_account" validate:"required,len=15"`
+	DEBET_ACCOUNT     string  `json:"debet_account" validate:"required,len=15,numeric"`
 	DEBET_NAME        string  `json:"debet_name" validate:"required,max=50"`
 	DEBET_CURR        string  `json:"debet_curr" validate:"required,len=3"`
-	CREDIT_ACCOUNT    string  `json:"credit_account" validate:"required,len=15"`
+	CREDIT_ACCOUNT    string  `json:"credit_account" validate:"required,len=15,numeric"`
 	CREDIT_NAME       string  `json:"credit_name" validate:"required,max=50"`
 	CREDIT_CURR       string  `json:"credit_curr" validate:"required,len=3"`
 	AMOUNT            float64 `json:"amount" validate:"required"`
