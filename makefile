@@ -10,6 +10,9 @@ air:
 docker-up:
 	docker compose up -d --build
 
+docker-run:
+	docker compose up -d app
+	
 container-reset:
 	docker-compose down && docker-compose up -d
 
