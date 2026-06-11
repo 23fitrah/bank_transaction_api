@@ -14,7 +14,7 @@ services:
     container_name: elasticsearch
     environment:
       - discovery.type=single-node
-      - ELASTIC_PASSWORD=P@ssw0rd12
+      - ELASTIC_PASSWORD=YOUR_ELASTIC_PASSWORD
       - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
       - bootstrap.memory_lock=true
       - xpack.security.enabled=true
