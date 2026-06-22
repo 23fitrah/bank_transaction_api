@@ -50,7 +50,7 @@ Check the documentation below for setup instructions and API usage examples.
 
 3. **Run The application**
    ```bash
-   go run main.go
+   make run
 4. **The API will be available at:**
    ```bash
    http://localhost:6969
