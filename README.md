@@ -30,7 +30,7 @@ This project is designed to be easy to understand, easy to integrate, and suitab
 | POST | /api/v1/transaction/create | Create new transaction for transfer |
 | GET | /api/v1/transaction/get-all?page=1&limit=10 | List transaction for history |
 | GET | /api/v1/transaction/detail/:id | Get detail transaction |
-| GET | /api/v1/transaction/get-download | Get download transaction xls format|
+| GET | /api/v1/transaction/get-download | Get download transaction for report (xls format)|
 
 
 ## Getting Started
