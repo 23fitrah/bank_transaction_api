@@ -82,7 +82,20 @@ docker-compose up -d
               "account_no": "030881899288083"
           }
       }'
-
+   
+   ```bash
+      {
+       "status": "SUCCESS",
+       "response_code": "00",
+       "message": "Account successfully retrieved",
+       "data": {
+           "account_name": "LcvXX XXIAN",
+           "account_no": "041055784583948",
+           "balance": 1300,
+           "currency": "IDR",
+           "status": "ACTIVE"
+       }
+      }
 2. **Create Transaction**
     ```bash
    curl --location 'localhost:6969/transaction/create' \
@@ -104,3 +117,10 @@ docker-compose up -d
            "remark": "Payment invoice February"
        }
    }'
+
+   ```bash
+   {
+    "status": "SUCCESS",
+    "response_code": "00",
+    "message": "Transaction successfully inserted"
+   }
