@@ -5,18 +5,33 @@ This project is designed to be easy to understand, easy to integrate, and suitab
 
 ## Features
 
-- Balance inquiry  
-- Transaction history  
-- Create Transaction
+- Balance inquiry
+- List Account
+- Create/Update Account 
+- Create Transaction  
+- History Transaction
+- Detail Transaction
 - Download report  
-- RESTful API endpoints  
-- Lightweight and easy to extend  
 
 ## Use Cases
 
 - Learning and prototyping banking APIs  
 - Backend services for financial applications  
 - Internal tools and microservices  
+
+## API List
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/v1/account/inquiry | Inquiry Account for balance|
+| GET | /api/v1/account/get-all?page=1&limit=10 | List Account pagination |
+| POST | /api/v1/account/create | Create new Acccount |
+| PUT | /api/v1/account/update | Update account  |
+| POST | /api/v1/transaction/create | Create new transaction for transfer |
+| GET | /api/v1/transaction/get-all?page=1&limit=10 | List transaction for history |
+| GET | /api/v1/transaction/detail/:id | Get detail transaction |
+| GET | /api/v1/transaction/get-download | Get download transaction xls format|
+
 
 ## Getting Started
 
