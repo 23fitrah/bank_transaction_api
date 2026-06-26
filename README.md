@@ -104,3 +104,7 @@ docker-compose up -d
            "remark": "Payment invoice February"
        }
    }'
+
+## License
+
+This project is intended for portfolio demonstration.
