@@ -36,7 +36,7 @@ services:
     container_name: kibana
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
-      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=YOUR_KIBANA_TOKEN
+      - ELASTICSEARCH_SERVICEACCOUNTTOKEN=AAEAAWVsYXN0aWMva2liYW5hL2tpYmFuYS10b2tlbjpKNHUtNWk0YlN6ZTFEcUIzVVVDZFlB
     ports:
       - "5601:5601"
     depends_on:
@@ -47,10 +47,24 @@ services:
     volumes:
       - kibana_data:/usr/share/kibana/data
 
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: P@ssw0rd
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
 volumes:
   es_data:
     driver: local
   kibana_data:
+    driver: local
+  rabbitmq_data:
     driver: local
  
 networks:
