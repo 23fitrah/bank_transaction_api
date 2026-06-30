@@ -13,6 +13,17 @@ This project is designed to be easy to understand, easy to integrate, and suitab
 - Detail Transaction
 - Download report  
 
+## Tech Stack
+
+* Go (Golang)
+* Gin Framework
+* RabbitMQ
+* SQL Server
+* Elasticsearch
+* Redis
+* GORM
+* Docker Container
+
 ## Use Cases
 
 - Learning and prototyping banking APIs  
