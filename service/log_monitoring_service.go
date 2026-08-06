@@ -24,3 +24,22 @@ func (s *LogMonitoringService) InsertLogMonitoringService(ctx context.Context, l
 	}
 	return insertID, err
 }
+
+func (s *LogMonitoringService) GetAllLogService(ctx context.Context, limit, offset int, menu, dateFrom, dateTo, method string) ([]*log_monitoring.Log_monitoring, int64, error) {
+	var list []*log_monitoring.Log_monitoring
+	var total int64
+	var err error
+
+	if method == "elastic" {
+		list, total, err = s.Repo.FetchLogFromElasticSearch(ctx, limit, offset, menu, dateFrom, dateTo)
+
+	} else {
+		list, total, err = s.Repo.GetAllLogRepository(ctx, limit, offset, menu, dateFrom, dateTo)
+
+	}
+	if err != nil {
+
+		return nil, 0, fmt.Errorf("service get all logs: %w", err)
+	}
+	return list, total, nil
+}

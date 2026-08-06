@@ -34,4 +34,12 @@ const (
 	MessageFailedCheckBalance        = "Failed to check account balance"
 	MessageFailedInsufficientBalance = "Insufficient balance"
 	MMessageDataNotFoundTransaction  = "Data transaction not found"
+
+	//log
+	MessageNotFoundLog   = "Log not found"
+	MessageSuccessGetLog = "Log successfully retrieved"
+
+	//user
+	MessageUserNotFound = " User does not exist"
+	MessageUserFound    = " User Found"
 )

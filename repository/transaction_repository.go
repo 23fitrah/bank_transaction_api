@@ -7,7 +7,10 @@ import (
 	"fmt"
 	"strconv"
 	"time"
+	"transaction_api/constants"
 	model "transaction_api/model/transaction"
+
+	"github.com/bytedance/sonic"
 )
 
 type TransactionRepository struct {
@@ -20,7 +23,7 @@ func NewTransactionRepository(db *sql.DB) *TransactionRepository {
 
 func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, data model.Transaction) (int64, error) {
 	now := time.Now()
-
+	var lastresultId int64
 	const query = `
 		INSERT INTO 
 			[t_transactions] (
@@ -63,7 +66,7 @@ func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, d
 	formatted := t.Format("20060102150405")
 	refno := "0" + formatted
 
-	res, err := r.db.ExecContext(ctx, query,
+	err := r.db.QueryRow(query,
 		sql.Named("p1", data.ROWID_SENDER),
 		sql.Named("p2", data.ROWID_BENEFICIARY),
 		sql.Named("p14", now.Format("2006-01-02 15:04:05")),
@@ -77,18 +80,52 @@ func (r *TransactionRepository) SaveTransactionRepository(ctx context.Context, d
 		sql.Named("p10", data.REMARK),
 		sql.Named("p11", refno),
 		sql.Named("p12", "0000"),
-		sql.Named("p13", "Ready to process"))
+		sql.Named("p13", "Ready to process")).Scan(&lastresultId)
 
 	if err != nil {
 		return 0, fmt.Errorf("error inserting into t_transaction: %w", err)
 	}
 
-	rowsAffected, err := res.RowsAffected()
-	if err != nil {
-		return 0, fmt.Errorf("error inserting rows affected: %w", err)
+	payloadData := map[string]interface{}{
+		"RowID":            lastresultId,
+		"Instr_id":         "INSTR-0001",
+		"EndToEndId":       data.REFERENCE_NUMBER,
+		"DebtorName":       data.DEBET_NAME,
+		"DebtorAgentBIC":   "PDJBIDJAXXX",
+		"CreditorName":     data.CREDIT_NAME,
+		"CreditorAgentBIC": "CENAIDJAXXX",
+		"Amount":           data.AMOUNT,
+		"Currency":         data.CREDIT_CURR,
+		"RemittanceInfo":   data.REMARK,
+		"SettlementMehod":  "CLRG",
 	}
 
-	return rowsAffected, nil
+	payloadBytes, err := sonic.Marshal(payloadData)
+	if err != nil {
+		return 0, fmt.Errorf("error marshal payload : %w", err)
+	}
+
+	_, err = r.db.ExecContext(ctx, `
+			INSERT INTO MESSAGE_OUTBOX (
+				EXCHANGE,
+				ROUTING_KEY,
+				PAYLOAD,
+				STATUS,
+				RETRY_COUNT,
+				CREATED_AT
+			)
+			VALUES (@p1, @p2, @p3, 'PENDING', 0, GETDATE())
+		`,
+		sql.Named("p1", constants.RABBITMQ_EXCHANGE),
+		sql.Named("p2", constants.RABBITMQ_ROUTING),
+		sql.Named("p3", string(payloadBytes)),
+	)
+
+	if err != nil {
+		return 0, fmt.Errorf("error insert message_outbox : %w", err)
+	}
+
+	return lastresultId, nil
 }
 
 func (r *TransactionRepository) CheckIdOriginalExistsRepository(ctx context.Context, idOriginal string) (int, error) {

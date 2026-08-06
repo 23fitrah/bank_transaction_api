@@ -12,6 +12,8 @@ type Config struct {
 	DatabaseMysql DatabaseConfig `json:"database"`
 	DatabaseMsql  DatabaseConfig `json:"databaseMsql"`
 	Logging       LoggingConfig  `json:"logging"`
+	RedisDB       RedisConfig    `json:"redisdb"`
+	RabbitMQ      RabbitMQConfig `json:"rabbitmq"`
 }
 
 type LoggingConfig struct {
@@ -39,6 +41,21 @@ type DatabaseConfig struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 	Database string `json:"database"`
+}
+
+type RedisConfig struct {
+	RedisHost     string `json:"redishost"`
+	RedisPort     string `json:"redisport"`
+	RedisUsername string `json:"redisusername"`
+	RedisPassword string `json:"redispassword"`
+	RedisDatabase string `json:"redisdatabase"`
+}
+
+type RabbitMQConfig struct {
+	UrlRMQ   string `json:"url"`
+	Exchange string `json:"exchange"`
+	Routing  string `json:"exchange"`
+	Queue    string `json:"Queue"`
 }
 
 func Load() (*Config, error) {
@@ -70,6 +87,19 @@ func Load() (*Config, error) {
 				Enabled:  os.Getenv("ES_ENABLED") == "true",
 			},
 			Level: os.Getenv("LOG_LEVEL"),
+		},
+		RedisDB: RedisConfig{
+			RedisHost:     os.Getenv("REDIS_HOST"),
+			RedisPort:     os.Getenv("REDIS_PORT"),
+			RedisUsername: "",
+			RedisPassword: os.Getenv("REDIS_PASSWORD"),
+			RedisDatabase: os.Getenv("REDIS_DATABASE"),
+		},
+		RabbitMQ: RabbitMQConfig{
+			UrlRMQ:   os.Getenv("RABBITMQ_URL"),
+			Exchange: os.Getenv("RABBITMQ_EXCHANGE"),
+			Routing:  os.Getenv("RABBITMQ_ROUTING"),
+			Queue:    os.Getenv("RABBITMQ_QUEUE"),
 		},
 	}, nil
 }

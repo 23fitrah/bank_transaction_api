@@ -99,7 +99,6 @@ func LogMonitoringMiddleware(service *service.LogMonitoringService) gin.HandlerF
 			IP_CLIENT:    c.ClientIP(),
 			USER_AGENT:   c.Request.Header.Get("User-Agent"),
 		}
-
 		go func() {
 
 			test, insertErr := service.InsertLogMonitoringService(context.Background(), logData) // jangan panic-in request
