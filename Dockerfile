@@ -13,6 +13,7 @@ WORKDIR /app
 RUN apk add --no-cache ca-certificates
 
 COPY --from=builder /app/transaction_api .
+COPY --from=builder /app/.env .
 
 RUN chmod +x ./transaction_api
 
