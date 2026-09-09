@@ -1,6 +1,7 @@
 package config
 
 import (
+	"log"
 	"os"
 	"strconv"
 
@@ -61,6 +62,9 @@ type RabbitMQConfig struct {
 func Load() (*Config, error) {
 	_ = godotenv.Load() // Load .env file
 
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found, relying on system environment variables")
+	}
 	readTimeout, _ := strconv.Atoi(os.Getenv("SERVER_READ_TIMEOUT"))
 	writeTimeout, _ := strconv.Atoi(os.Getenv("SERVER_WRITE_TIMEOUT"))
 	shutdownTimeout, _ := strconv.Atoi(os.Getenv("SERVER_SHUTDOWN_TIMEOUT"))
